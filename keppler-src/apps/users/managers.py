@@ -11,8 +11,8 @@ class CustomUserManager(BaseUserManager):
         except ValidationError:
             raise ValueError(_('Must provide a valid email address.'))
         
-    def create_user(self, user_name, first_name, last_name, email, password, **extra_fields):
-        if not user_name:
+    def create_user(self, username, first_name, last_name, email, password, **extra_fields):
+        if not username:
             raise ValueError(_('Username must be provided.'))
         
         if not first_name:
@@ -28,7 +28,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Email must be provided to create a user account.'))
         
         user = self.model(
-            user_name=user_name,
+            username=username,
             first_name=first_name,
             last_name=last_name,
             email=email,
@@ -42,7 +42,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     
-    def create_superuser(self, user_name, first_name, last_name, email, password, **extra_fields):
+    def create_superuser(self, username, first_name, last_name, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -50,7 +50,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superusers must be staff. (is_staff = True)"))
         
-        if extra_fields.get("is_staff") is not True:
+        if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superusers must be superusers. (is_superuser = True)"))
         
         if not password:
@@ -62,7 +62,7 @@ class CustomUserManager(BaseUserManager):
         else:
             raise ValueError(_('Email must be provided to create an admin account.'))
         
-        user = self.create_user(user_name, first_name, last_name, email, password, **extra_fields)
+        user = self.create_user(username, first_name, last_name, email, password, **extra_fields)
         user.save(using=self._db)
         return user
         
