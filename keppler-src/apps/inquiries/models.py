@@ -6,7 +6,7 @@ from apps.common.models import TimeStampedUUIDModel
 
 class Inquiry(TimeStampedUUIDModel):
     name = models.CharField(_("Enter Your Name"), max_length=100)
-    phone_number = models.CharField(
+    phone_number = PhoneNumberField(
         _("Phone Number"), max_length=30, default="+17804567892"
     )
     email = models.EmailField(_("Email"))
