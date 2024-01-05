@@ -177,10 +177,12 @@ class Product(TimeStampedUUIDModel):
     average_rating = models.FloatField(
         verbose_name=_("Average Rating"),
         default=0.0,
+        null=True,
+        blank=True,
         validators=[MinValueValidator(0.0)],
     )
     review_count = models.PositiveIntegerField(
-        verbose_name=_("Review Count"), default=0
+        verbose_name=_("Review Count"), default=0, null=True, blank=True
     )
     published_status = models.BooleanField(
         verbose_name=_("Published Status"), default=False
@@ -210,6 +212,17 @@ class Product(TimeStampedUUIDModel):
         tax_amount = round(tax_percentage * product_price, 2)
         price_after_tax = float(round(product_price + tax_amount, 2))
         return price_after_tax
+
+    def update_rating_and_review_count(self):
+        reviews = self.product_reviews.all()
+        total_rating = sum([review.rating for review in reviews])
+        review_count = reviews.count()
+        self.review_count = review_count
+        if review_count > 0:
+            self.average_rating = total_rating / review_count
+        else:
+            self.average_rating = 0
+        self.save()
 
 
 class ProductViews(TimeStampedUUIDModel):
