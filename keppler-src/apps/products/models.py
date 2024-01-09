@@ -121,9 +121,6 @@ class Product(TimeStampedUUIDModel):
     # if in the future we need to use a related model uncomment this section
     # image = models.ImageField(verbose_name=_("Main Product Image"), upload_to="product_images/", null=True, blank=True)
     # additional_images = models.ManyToManyField('ProductImage', related_name='product_images', blank=True)
-    sku = models.CharField(
-        verbose_name=_("SKU"), max_length=100, unique=True, blank=True
-    )
     advert_type = models.CharField(
         verbose_name=_("Advert Type"),
         max_length=50,
