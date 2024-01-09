@@ -31,7 +31,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "photo2",
             "photo3",
             "photo4",
-            "sku",
             "advert_type",
             "product_type",
             "product_status",
