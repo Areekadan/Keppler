@@ -121,6 +121,14 @@ class CreateProductAPIView(APIView):
 
     def post(self, request):
         user = request.user
+        profile = user.profile
+
+        if not profile.is_seller:
+            return Response(
+                {"error": "You are not registered as a seller."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         data = request.data
         data["user"] = request.user.pkid
         serializer = ProductCreateSerializer(data=data)

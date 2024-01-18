@@ -9,6 +9,9 @@ urlpatterns = [
     path("api/v1/auth/", include("djoser.urls.jwt")),
     path("api/v1/profile/", include("apps.profiles.urls")),
     path("api/v1/products/", include("apps.products.urls")),
+    path("api/v1/ratings/", include("apps.ratings.urls")),
+    path("api/v1/reviews/", include("apps.reviews.urls")),
+    path("api/v1/inquiries/", include("apps.inquiries.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = "Keppler Admin"
