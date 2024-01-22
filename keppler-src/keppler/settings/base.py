@@ -1,7 +1,11 @@
 from datetime import timedelta
-import environ
-
 from pathlib import Path
+import logging
+import logging.config
+
+from django.utils.log import DEFAULT_LOGGING
+
+import environ
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -20,13 +24,14 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS").split()
 
 # Application definition
 
 DJANGO_APPS = [
+    "django.contrib.contenttypes",
     "django.contrib.admin",
     "django.contrib.auth",
-    "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -171,11 +176,6 @@ DJOSER = {
         "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
-
-import logging
-import logging.config
-
-from django.utils.log import DEFAULT_LOGGING
 
 logger = logging.getLogger(__name__)
 

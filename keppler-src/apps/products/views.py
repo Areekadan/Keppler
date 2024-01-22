@@ -1,4 +1,5 @@
 import logging
+
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, permissions, status
@@ -9,11 +10,8 @@ from rest_framework.views import APIView
 from .exceptions import ProductNotFound
 from .models import Product, ProductViews
 from .pagination import ProductPagination
-from .serializers import (
-    ProductSerializer,
-    ProductCreateSerializer,
-    ProductViewSerializer,
-)
+from .serializers import (ProductCreateSerializer, ProductSerializer,
+                          ProductViewSerializer)
 
 logger = logging.getLogger(__name__)
 

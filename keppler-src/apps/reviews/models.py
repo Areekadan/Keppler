@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from apps.common.models import TimeStampedUUIDModel
 from apps.products.models import Product
 from keppler.settings.base import AUTH_USER_MODEL

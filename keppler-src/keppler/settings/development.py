@@ -1,6 +1,6 @@
 from .base import *
 
-EMAIL_BACKEND = "keppler.backends.email_backend.EmailBackend"
+EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_USE_TLS = True
 EMAIL_PORT = env("EMAIL_PORT")
@@ -20,3 +20,7 @@ DATABASES = {
         "PORT": env("PG_PORT"),
     }
 }
+
+CELERY_BROKER_URL = env("CELERY_BROKER")
+result_backend = env("CELERY_BACKEND")
+CELERY_TIMEZONE = "America/Edmonton"

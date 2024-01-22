@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+
 from apps.common.models import TimeStampedUUIDModel
 
 User = get_user_model()
