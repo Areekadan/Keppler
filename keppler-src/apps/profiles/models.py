@@ -21,8 +21,8 @@ class Profile(TimeStampedUUIDModel):
         verbose_name=_("phone Number"), max_length=30, default="+17806602639"
     )
     about_me = models.TextField(
-        verbose_name=_("About seller"),
-        default="What would you like others to know about you as a seller?",
+        verbose_name=_("About me"),
+        default="What would you like others to know about you?",
     )
     license = models.CharField(
         verbose_name=_("Business license"), max_length=20, blank=True, null=True
