@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -o errexit
+
+set -o nounset
+
+watchmedo auto-restart -d keppler/ -p "*.py" -- celery -A keppler worker --loglevel=info

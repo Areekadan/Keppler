@@ -16,6 +16,7 @@ services:
             - .env
         depends_on:
             - postgres-db
+            - redis
         networks:
           - keppler-react
 
@@ -31,6 +32,43 @@ services:
             - POSTGRES_DB=${POSTGRES_DB}
         networks:
           - keppler-react
+    
+    redis:
+        image: redis:7.2-alpine
+        networks:
+            - keppler-react
+    
+    celery_worker:
+        build:
+            context: .
+            dockerfile: ./docker/local/django/Dockerfile
+        command: /start-celeryworker
+        volumes:
+            - .:/app
+        env_file:
+            - .env
+        depends_on:
+            - redis
+            - postgres-db
+        networks:
+            - keppler-react
+    
+    flower:
+        build:
+            context: .
+            dockerfile: ./docker/local/django/Dockerfile
+        command: /start-flower
+        volumes:
+            - .:/app
+        env_file:
+            - .env
+        ports:
+            - "5557:5555"
+        depends_on:
+            - redis
+            - postgres-db
+        networks:
+            - keppler-react
     
     nginx:
         restart: always
