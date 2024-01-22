@@ -1,9 +1,9 @@
 from django.core.mail import send_mail
-
-from keppler.settings.development import DEFAULT_FROM_EMAIL
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from keppler.settings.development import DEFAULT_FROM_EMAIL
 
 from .models import Inquiry
 

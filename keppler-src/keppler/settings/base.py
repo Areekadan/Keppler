@@ -1,7 +1,11 @@
 from datetime import timedelta
-import environ
-
 from pathlib import Path
+import logging
+import logging.config
+
+from django.utils.log import DEFAULT_LOGGING
+
+import environ
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -171,11 +175,6 @@ DJOSER = {
         "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
-
-import logging
-import logging.config
-
-from django.utils.log import DEFAULT_LOGGING
 
 logger = logging.getLogger(__name__)
 
