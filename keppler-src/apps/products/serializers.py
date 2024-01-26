@@ -11,6 +11,11 @@ class ProductSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     country = CountryField(name_only=True)
     reviews = serializers.SerializerMethodField(read_only=True)
+    cover_photo = serializers.SerializerMethodField()
+    photo1 = serializers.SerializerMethodField()
+    photo2 = serializers.SerializerMethodField()
+    photo3 = serializers.SerializerMethodField()
+    photo4 = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -54,6 +59,21 @@ class ProductSerializer(serializers.ModelSerializer):
         reviews = obj.product_reviews.all()
         serializer = ReviewSerializer(reviews, many=True)
         return serializer.data
+
+    def get_cover_photo(self, obj):
+        return obj.cover_photo.url
+
+    def get_photo1(self, obj):
+        return obj.photo1.url
+
+    def get_photo2(self, obj):
+        return obj.photo2.url
+
+    def get_photo3(self, obj):
+        return obj.photo3.url
+
+    def get_photo4(self, obj):
+        return obj.photo4.url
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
