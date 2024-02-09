@@ -24,9 +24,10 @@ class CreateSellerRating(APIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        alreadyExists = seller_profile.seller_review.filter(
-            seller__pkid=profile_user.pkid
+        alreadyExists = Rating.objects.filter(
+            reviewer=request.user, seller=seller_profile
         ).exists()
+
         if alreadyExists:
             return Response(
                 {"detail": "You have already left a review on this profile."},
