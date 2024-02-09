@@ -18,7 +18,18 @@ services:
             - postgres-db
             - redis
         networks:
-          - keppler-react
+            - keppler-react
+
+    client:
+        build:
+            context: ./client
+            dockerfile: ./docker/local/Dockerfile
+        restart: on-failure
+        volumes:
+            - ./client:/app
+            - /app/node_modules
+        networks:
+            - keppler-react
 
     postgres-db:
         image: postgres:15.0-alpine
