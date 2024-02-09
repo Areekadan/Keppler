@@ -14,6 +14,9 @@ class Review(TimeStampedUUIDModel):
         FOUR = 4, _("Very Good")
         FIVE = 5, _("Excellent")
 
+    rating = models.IntegerField(
+        verbose_name=_("Rating"), choices=Rating.choices, default=Rating.THREE
+    )
     reviewer = models.ForeignKey(
         AUTH_USER_MODEL, verbose_name=_("Reviewer"), on_delete=models.CASCADE
     )
@@ -22,9 +25,6 @@ class Review(TimeStampedUUIDModel):
         verbose_name=_("Reviewed Product"),
         related_name="product_reviews",
         on_delete=models.CASCADE,
-    )
-    rating = models.IntegerField(
-        verbose_name=_("Rating"), choices=Rating.choices, default=Rating.THREE
     )
     comment = models.TextField(verbose_name=_("Comment"))
     photo = models.ImageField(
