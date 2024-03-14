@@ -5,6 +5,7 @@ import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
 import Product from "../components/Product";
 import { getProducts } from "../features/products/productSlice";
+import Title from "../components/Title";
 
 const ProductsPage = () => {
   const { products, isLoading, isError, message } = useSelector(
@@ -24,11 +25,16 @@ const ProductsPage = () => {
 
   return (
     <>
-      <Container>
-        <Row>
-          <Col className="mg-top text-center">
-            <h1>All Products</h1>
-            <hr className="hr-text" />
+      <Title
+        title="Keppler Product Catalog"
+        description="Discover and shop for products from around the world on Keppler. From local crafts to international brands, explore a diverse selection of electronics, fashion, home goods, and more, no matter where you are."
+        keywords="global shopping, international product catalog, worldwide marketplace, online shopping, electronics, fashion, home goods, international brands, local crafts, Keppler products"
+      />
+      <Container className="mg-top">
+        <Row className="justify-content-center">
+          <Col lg={6} md={8} sm={12} className="text-center">
+            <h1 className="text-center mb-4">Globally Sourced Products</h1>
+            <hr className="my-2" />
           </Col>
         </Row>
         {

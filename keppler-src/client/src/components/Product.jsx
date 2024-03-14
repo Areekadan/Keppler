@@ -5,22 +5,13 @@ import { FaEye } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import StarRating from "./StarRating";
 import ProductToolTip from "./RatingToolTip";
-
-const priceWithCommas = (x) => {
-  const formattedPrice = x.toFixed(2);
-  return formattedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-const truncateText = (text, maxLength) => {
-  if (text.length <= maxLength) return text;
-  return text.substr(0, text.lastIndexOf(" ", maxLength)) + "...";
-};
+import { priceWithCommas, truncateText } from "../utils";
 
 const Product = ({ product }) => {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const truncatedText = truncateText(product.title, 121);
   const formattedPrice = priceWithCommas(Number(product.price));
-
   return (
     <Card className="product-card">
       <Badge bg="success" className="product-badge">
@@ -30,11 +21,8 @@ const Product = ({ product }) => {
       <Card.Img src={product.cover_photo} variant="top"></Card.Img>
       <Card.Body className="product-card-body">
         <Link
-          style={{
-            color: "black",
-            textDecoration: "none",
-          }}
-          to={`/product/${product.slug}`}
+          className="text-dark text-decoration-none"
+          to={`/products/${product.slug}`}
         >
           <Card.Title as="p" className="product-title">
             <strong>{truncatedText}</strong>

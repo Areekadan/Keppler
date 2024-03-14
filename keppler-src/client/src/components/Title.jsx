@@ -12,7 +12,7 @@ const Title = ({ title, description, keywords }) => {
 };
 
 Title.defaultProps = {
-  title: "Keppler",
+  title: "Shop On Keppler",
   description:
     "Shop anywhere in the world without leaving the comfort of your home",
   keywords:

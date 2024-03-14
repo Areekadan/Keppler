@@ -9,14 +9,26 @@ import {
   Button,
   NavbarBrand,
 } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { LinkContainer } from "react-router-bootstrap";
+import { HiOutlineShoppingBag } from "react-icons/hi2";
+import { logout, reset } from "../features/auth/authSlice";
 
 const Header = () => {
   const topNavbarRef = useRef(null);
   const [topNavbarHeight, setTopNavbarHeight] = useState(0);
-
+  const { profile } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+  };
   useEffect(() => {
     const updateTopNavbarHeight = () => {
       if (topNavbarRef.current) {
@@ -58,26 +70,21 @@ const Header = () => {
               className="justify-content-end"
             >
               <Nav className="me-auto">
+                <LinkContainer className="nav-adjusted" to="/">
+                  <Nav.Link>Home</Nav.Link>
+                </LinkContainer>
                 <NavDropdown
                   title="Countries"
-                  className="nav-adjusted"
                   id="basic-nav-dropdown"
                 ></NavDropdown>
-                <LinkContainer to="">
-                  <Nav.Link>Deals</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/products">
-                  <Nav.Link>Most Popular</Nav.Link>
-                </LinkContainer>
-                <NavDropdown
-                  title="Products"
-                  id="basic-nav-dropdown"
-                ></NavDropdown>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
+                <NavDropdown title="Products" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/products">
+                    All Products
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.1">
+                    Most Popular
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Deals</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.3">
                     Something
                   </NavDropdown.Item>
@@ -87,10 +94,49 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
-              <Nav>
-                <Nav.Link>Cart</Nav.Link>
-                <Nav.Link>Sign In</Nav.Link>
-              </Nav>
+              {user ? (
+                <Nav>
+                  <NavDropdown
+                    title={
+                      profile?.first_name ? profile?.first_name : "Welcome"
+                    }
+                    id="username"
+                  >
+                    <LinkContainer to="/profile">
+                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      Sign Out
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                      Another action
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                      Something
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/3.4">
+                      Separated link
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link>
+                    <HiOutlineShoppingBag
+                      style={{ fontSize: "22px", color: "#ffc107" }}
+                    />
+                  </Nav.Link>
+                </Nav>
+              ) : (
+                <Nav>
+                  <LinkContainer to="/login">
+                    <Nav.Link>Sign In</Nav.Link>
+                  </LinkContainer>
+                  <Nav.Link>
+                    <HiOutlineShoppingBag
+                      style={{ fontSize: "22px", color: "#ffc107" }}
+                    />
+                  </Nav.Link>
+                </Nav>
+              )}
             </Navbar.Collapse>
           </Container>
         </Navbar>

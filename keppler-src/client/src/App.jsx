@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
+import ProductPage from "./pages/SingleProductPage";
 import NotFound from "./components/NotFound";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ActivationPage from "./pages/ActivationPage";
+import ProfilePage from "./pages/ProfilePage";
+import Spinner from "./components/Spinner";
+import { getProfile } from "./features/profiles/profileSlice";
 
 const App = () => {
+  const { user } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (user) {
+      dispatch(getProfile());
+    }
+  }, [dispatch]);
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <Router>
       <Header />
@@ -16,6 +35,11 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:slug" element={<ProductPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/activate/:uid/:token" element={<ActivationPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer theme="light" />

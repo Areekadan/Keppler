@@ -10,6 +10,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name")
+    profile_photo = serializers.SerializerMethodField()
     email = serializers.EmailField(source="user.email")
     full_name = serializers.SerializerMethodField(read_only=True)
     country = CountryField(name_only=True)
@@ -45,6 +46,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         reviews = obj.seller_review.all()
         serializer = RatingSerializer(reviews, many=True)
         return serializer.data
+
+    def get_profile_photo(self, obj):
+        return obj.profile_photo.url
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
