@@ -6,7 +6,7 @@ main {
 	background-color: #FFF;
 }
 .mg-top {
-	margin-top: 90px;
+	margin-top: 94px;
 }
 a {
 	text-decoration: none;
@@ -14,9 +14,8 @@ a {
 .large-btn {
 	font-size: 3.25rem;
 }
-.hr-text {
-	background: linear-gradient(to right, transparent, #000000, transparent);
-	line-height: 24px;
+.button-hover-effect:hover{
+	background-color: rgb(246, 187, 7) !important;
 }
 
 /* header */
@@ -62,6 +61,257 @@ a {
 	margin-left: 60px;
 }
 
+/* homepage */
+.home-container {
+	height: 260vh;
+}
+.home-background1 {
+	height: 45vh;
+	background-Color: #AEDBF2;
+}
+.home-background2 {
+	height: 30vh;
+	background-color: #BEE2F4;
+}
+.hero-section p {
+	font-size: 20px;
+	font-weight: bolder;
+	color: white;
+}
+.hero-content{
+	padding: 4vh;
+	margin-top: 1vh;
+}
+.background-container {
+	position: relative;
+	z-index: 1;
+} 
+.overlay-content {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	z-index: 2;
+}
+.home-card-button-wrapper {
+	height: 12vh;
+	background-color: transparent;
+	border: 1px solid white;
+	border-radius: 2px;
+	z-index: 2;
+}
+.home-card-chevron {
+	color: black;
+	font-size: 50px;
+}
+.home-card-container {
+	margin-top: -6vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+	border: 1px solid silver;
+    border-radius: 2px;
+    overflow: auto;
+}
+.home-card-main-title {
+	font-weight: 300;
+    margin-bottom: 15px;
+    text-align: left;
+}
+.home-single-card-main-title {
+	font-weight: 300;
+    margin-bottom: 15px;
+    text-align: left;
+}
+.home-deal-card {
+    margin: 10px;
+    text-align: center;
+	border: none;
+	background-color: transparent;
+}
+.home-country-card {
+    margin: 10px;
+    text-align: center;
+	border: none;
+	background-color: transparent;
+}
+.home-single-card {
+    margin: 10px;
+    text-align: center;
+	background-color: transparent;
+	border: 1px solid silver;
+	padding: 5%;
+}
+.home-deal-card img {
+    width: 100%;
+    height: 55vh; 
+    object-fit: cover; 
+    max-height: 500px; 
+	border: 1px solid white;
+	border-radius: 5px;
+}
+.home-country-card img {
+    width: 100%;
+    height: 15vh; 
+    object-fit: cover; 
+    max-height: 200px; 
+	border: 1px solid black;
+}
+.home-single-card img {
+	width: 100%;
+    height: 30vh; 
+    object-fit: cover; 
+    max-height: 500px;
+	border-radius: 0px; 
+}
+.home-card-title{
+	font-size: 27px;
+	font-weight: 300;
+	margin-bottom: 20px;
+}
+.home-card-body {
+	margin-left: -85%;
+    padding: 10px !important;
+}
+.home-deal-card-sale {
+	position: absolute;
+	height: 15%;
+	width: 28%;
+	bottom: 25px;
+	right: -12px;
+	background-color: rgba(255, 193, 7, 0.6);
+	color: black;
+	padding: 10px;
+	font-size: x-large;
+	font-weight: 400;
+}
+.home-single-card-title {
+	position: absolute;
+	height: 15%;
+	width: 100%;
+	bottom: 0px;
+	right: 0px;
+	background-color: rgba(255, 193, 7, 0.6);
+	color: black;
+	padding: 10px;
+	font-size: large;
+	font-weight: 500;
+}
+.home-single-img-title-container {
+	width: 100%;
+	height: 100%;
+}
+.home-cards-spacing{
+	margin-top: 15vh;
+}
+
+@media (max-width: 768px) {
+	.home-container{
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+		height: 110vh;
+	}
+	.home-background1 {
+		height: 30vh;
+		background-Color: #AEDBF2;
+	}
+	.home-background2 {
+		height: 15vh;
+		background-color: #BEE2F4;
+	}
+	.hero-section {
+		height: fit-content !important;
+		width: fit-content;
+	}
+	.hero-section p {
+		font-size: 14px !important;
+	}
+	.hero-button {
+		font-size: xx-small;
+		height: fit-content !important;
+		width: fit-content !important;
+	}
+	.home-card-container {
+		width: 410px;
+		margin-top: -1vh;
+		padding: 20px;
+	}
+	.home-card-main-title {
+		font-size: medium;
+		font-weight: 200;
+	}
+	.home-single-card-main-title {
+		font-weight: 200;
+		font-size: small;
+	}
+	.home-country-card {
+		margin: 5px;
+	}
+	.home-deal-card {
+		margin: 0px;
+	}
+	.home-single-card {
+		margin: 0px;
+		padding: 5%;
+	}
+	.home-country-card img {
+		height: 7vh;
+		max-height: 50px;
+	}
+	.home-deal-card img {
+		height: 18vh;
+		max-height: 150px;
+	}
+	.home-single-card img {
+		height: 15vh; 
+		max-height: 150px;
+	}
+	.home-card-chevron {
+		color: black;
+		font-size: small;
+	}
+	.home-card-title {
+		font-size: 12px;
+		margin-bottom: 10px;
+		font-weight: 200;
+	}
+	.home-card-body {
+		font-size: x-small;
+		margin-left: -40% !important;
+		width: fit-content !important;
+	}
+	.home-card-button-wrapper {
+		height: fit-content;
+		width: 20px;
+		background-color: transparent;
+		border: 1px solid white;
+		border-radius: 2px;
+		z-index: 2;
+	}
+	.home-deal-card-sale {
+		height: 18%;
+		width: 40%;
+		bottom: 20px;
+		right: -5px;
+		padding: 5px;
+		font-size: x-small;
+		font-weight: 500;
+	}
+	.home-single-card-title {
+		height: 25%;
+		width: 100%;
+		bottom: 0px;
+		right: 0px;
+		padding: 10px;
+		font-size: xx-small;
+		font-weight: 400;
+	}
+	.home-single-img-title-container {
+		width: 100%;
+		height: 100%;
+	}
+	.home-cards-spacing{
+		margin-top: 8vh;
+	}
+  }
 /* cards */
 .product-card{
 	position: relative;
@@ -255,9 +505,46 @@ a {
 	}
 }
 
+/* single product page */
+.single-product-card {
+	width: 100%;
+	max-width: 40rem;
+	height: auto;
+	margin-bottom: 15px;
+	border: none;
+}
+.single-product-card img {
+	height: 38rem;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 0px;
+	cursor: pointer;
+}
+.additional-image-card {
+	width: 100%;
+	max-width:9rem;
+	height: auto;
+	border: none;
+}
+.additional-image-card img {
+	height: 9rem;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 0px;
+	cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.additional-image-card img:hover {
+    transform: scale(1.05);
+}
+.reviewer-name {
+	background-color: #FFF;
+}
+
 /* footer */
 footer {
-	background-color: #0000001c;
+	background-color: #080065;
+	color: white;
 }
 .nav-icon {
 	margin-top: -8px !important;
@@ -271,53 +558,6 @@ h1.notfound {
 .broken-heart {
 	font-size: 7rem;
 	color: crimson;
-}
-
-/* homepage background image */
-.bg-image-container{
-	display: flex;
-	justify-content: center;
-}
-.bg-image-container > header {
-	width: 94%;
-	box-sizing: border-box;
-  }
-.main-bg-image {
-	background-attachment: scroll;
-	background-color: initial;
-	background-image: 
-		url("./images/homeImage.jpeg");
-	background-position: center center;
-	background-repeat: no-repeat no-repeat;
-	background-size: cover;
-}
-.masthead {
-	box-sizing: border-box;
-	color: #212529;
-	font-family: Nunito, -apple-system, "system-ui", "Segoe UI", Roboto,
-		"Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	letter-spacing: 1px;
-	padding: 0;
-	position: relative;
-	width: 94%;
-	height: 100%;
-}
-.popular-places{
-	background-color: #FFF;
-	height: 20vh;
-	position: absolute;
-	width: 85%;
-	border: 1px solid #707070;
-	opacity: 0.9;
-}
-.best-deals{
-	background-color: #FFF;
-	height: 35vh;
-	position: absolute;
-	width: 85%;
-	border: 1px solid #707070;
-	opacity: 0.9;
 }
 
 /* spinner */

@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import productAPI from "./productAPI";
+import profileAPI from "./profileAPI";
+import { logout } from "../auth/authSlice";
 
 const initialState = {
-  products: [],
-  product: {},
+  profile: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
 
-export const getProducts = createAsyncThunk(
-  "products/getAll",
+export const getProfile = createAsyncThunk(
+  "profile/getMe",
   async (_, thunkAPI) => {
     try {
-      return await productAPI.getProducts();
+      return await profileAPI.getProfile();
     } catch (error) {
       const message =
         (error.response &&
@@ -28,11 +28,12 @@ export const getProducts = createAsyncThunk(
   }
 );
 
-export const getOneProduct = createAsyncThunk(
-  "products/getOne",
-  async ({ slug }, thunkAPI) => {
+export const updateProfile = createAsyncThunk(
+  "profile/updateMe",
+  async ({ username, profileData }, thunkAPI) => {
     try {
-      return await productAPI.getOneProduct(slug);
+      const response = await profileAPI.updateProfile(username, profileData);
+      return response;
     } catch (error) {
       const message =
         (error.response &&
@@ -46,43 +47,54 @@ export const getOneProduct = createAsyncThunk(
   }
 );
 
-export const productSlice = createSlice({
-  name: "product",
+export const profileSlice = createSlice({
+  name: "profile",
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProducts.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getProducts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.products = action.payload.results;
-      })
-      .addCase(getProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(getOneProduct.pending, (state) => {
+      .addCase(getProfile.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
       })
-      .addCase(getOneProduct.fulfilled, (state, action) => {
+      .addCase(getProfile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.product = action.payload;
+        state.profile = action.payload.profile;
       })
-      .addCase(getOneProduct.rejected, (state, action) => {
+      .addCase(getProfile.rejected, (state, action) => {
         state.isLoading = false;
+        state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
+        state.profile = {};
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.profile = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.profile = {};
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = "";
       });
   },
 });
 
-export const { reset } = productSlice.actions;
-export default productSlice.reducer;
+export const { reset } = profileSlice.actions;
+export default profileSlice.reducer;

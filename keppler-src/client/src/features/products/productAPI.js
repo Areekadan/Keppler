@@ -1,10 +1,15 @@
-import axios from "axios";
+import api from "../api";
 
 const getProducts = async () => {
-  const response = await axios.get("api/v1/products/all/");
+  const response = await api.get("/products/all/");
   return response.data;
 };
 
-const productAPI = { getProducts };
+const getOneProduct = async (slug) => {
+  const response = await api.get(`/products/details/${slug}/`);
+  return response.data;
+};
+
+const productAPI = { getProducts, getOneProduct };
 
 export default productAPI;

@@ -10,8 +10,11 @@ from rest_framework.views import APIView
 from .exceptions import ProductNotFound
 from .models import Product, ProductViews
 from .pagination import ProductPagination
-from .serializers import (ProductCreateSerializer, ProductSerializer,
-                          ProductViewSerializer)
+from .serializers import (
+    ProductCreateSerializer,
+    ProductSerializer,
+    ProductViewSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
