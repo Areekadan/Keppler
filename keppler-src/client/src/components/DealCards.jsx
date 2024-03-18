@@ -27,16 +27,25 @@ const deals = [
     sale: "40%",
   },
   {
-    name: "Japan",
-    imgUrl: "https://www.worldometers.info//img/flags/small/tn_ja-flag.gif",
+    name: "Winter Wear",
+    imgUrl:
+      "https://www.8848altitude.com/eu/pub_docs/files/MountainstyleWorkinprogress/Mountain_Style_Ski_Hero_1600x900.jpg?extend=copy&width=2048&method=fit&height=1152&type=webp",
+    country: "Canada",
+    sale: "20%",
   },
   {
-    name: "Egypt",
-    imgUrl: "https://www.worldometers.info//img/flags/small/tn_eg-flag.gif",
+    name: "Japanese Sword",
+    imgUrl:
+      "https://www.thoughtco.com/thmb/VAnBWluUA7K1TJJ8-O7hk3a1Cio=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-814108654-78d4413a438a4dbaa4e3dba73267a045.jpg",
+    country: "Japan",
+    sale: "35%",
   },
   {
-    name: "Morocco",
-    imgUrl: "https://www.worldometers.info//img/flags/small/tn_mo-flag.gif",
+    name: "Natural Diamond",
+    imgUrl:
+      "https://sites.uab.edu/humanrights/files/2019/11/diamond-workers.jpg",
+    country: "Africa",
+    sale: "40%",
   },
 ];
 
@@ -65,7 +74,7 @@ const DealCards = () => {
             <GoChevronLeft className="home-card-chevron" />
           </Button>
         </div>
-        <Row ref={scrollContainerRef} className="flex-nowrap overflow-auto">
+        <Row ref={scrollContainerRef} className="flex-nowrap overflow-hidden">
           {deals.map((deal, index) => (
             <Col key={index} xs={4} md={4} lg={4} className="flex-nowrap">
               <Card className="home-deal-card d-flex align-items-center">
