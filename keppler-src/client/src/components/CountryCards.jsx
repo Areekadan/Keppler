@@ -56,7 +56,7 @@ const CountryCards = () => {
             <GoChevronLeft className="home-card-chevron" />
           </Button>
         </div>
-        <Row ref={scrollContainerRef} className="flex-nowrap overflow-auto">
+        <Row ref={scrollContainerRef} className="flex-nowrap overflow-hidden">
           {countries.map((country, index) => (
             <Col key={index} xs={4} md={4} lg={3} className="flex-nowrap">
               <Card className="home-country-card d-flex align-items-center">

@@ -10,6 +10,11 @@ const getOneProduct = async (slug) => {
   return response.data;
 };
 
-const productAPI = { getProducts, getOneProduct };
+const reviewProduct = async (id, reviewData) => {
+  const response = await api.post(`/reviews/${id}/`, reviewData);
+  return response.data;
+};
+
+const productAPI = { getProducts, getOneProduct, reviewProduct };
 
 export default productAPI;

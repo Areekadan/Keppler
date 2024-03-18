@@ -46,6 +46,24 @@ export const getOneProduct = createAsyncThunk(
   }
 );
 
+export const reviewProduct = createAsyncThunk(
+  "products/reviewProduct",
+  async ({ id, reviewData }, thunkAPI) => {
+    try {
+      const response = await productAPI.reviewProduct(id, reviewData);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -78,6 +96,21 @@ export const productSlice = createSlice({
       })
       .addCase(getOneProduct.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(reviewProduct.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+      })
+      .addCase(reviewProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.profile = action.payload;
+      })
+      .addCase(reviewProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
       });
