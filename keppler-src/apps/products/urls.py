@@ -18,6 +18,7 @@ urlpatterns = [
         views.UpdateProductAPIView.as_view(),
         name="update-product",
     ),
+    path("upload-image/", views.uploadProductImage, name="upload-product-image"),
     path(
         "delete/<slug:slug>/",
         views.DeleteProductAPIView.as_view(),

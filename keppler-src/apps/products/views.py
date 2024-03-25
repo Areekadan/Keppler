@@ -172,11 +172,21 @@ def uploadProductImage(request):
 
     product_id = data["product_id"]
     product = Product.objects.get(id=product_id)
-    product.cover_photo = request.FILES.get("cover_photo")
-    product.photo1 = request.FILES.get("photo1")
-    product.photo2 = request.FILES.get("photo2")
-    product.photo3 = request.FILES.get("photo3")
-    product.photo4 = request.FILES.get("photo4")
+    cover_photo = request.FILES.get("cover_photo")
+    if cover_photo:
+        product.cover_photo = cover_photo
+    photo1 = request.FILES.get("photo1")
+    if photo1:
+        product.photo1 = photo1
+    photo2 = request.FILES.get("photo2")
+    if photo2:
+        product.photo2 = photo2
+    photo3 = request.FILES.get("photo3")
+    if photo3:
+        product.photo3 = photo3
+    photo4 = request.FILES.get("photo4")
+    if photo4:
+        product.photo4 = photo4
     product.save()
     return Response("Image(s) uploaded")
 

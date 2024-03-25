@@ -8,6 +8,8 @@ import {
   FormControl,
   Button,
   NavbarBrand,
+  Offcanvas,
+  Image,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,6 +22,9 @@ import { logout, reset } from "../features/auth/authSlice";
 const Header = () => {
   const topNavbarRef = useRef(null);
   const [topNavbarHeight, setTopNavbarHeight] = useState(0);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const handleToggleDrawer = () => setShowDrawer(!showDrawer);
+  const handleCloseDrawer = () => setShowDrawer(false);
   const { profile } = useSelector((state) => state.profile);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -53,6 +58,7 @@ const Header = () => {
           <Container fluid>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Button
+              onClick={handleToggleDrawer}
               className="full-height-button"
               style={{
                 backgroundColor: "#FFF",
@@ -78,9 +84,9 @@ const Header = () => {
                   id="basic-nav-dropdown"
                 ></NavDropdown>
                 <NavDropdown title="Products" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/products">
-                    All Products
-                  </NavDropdown.Item>
+                  <LinkContainer to="/products">
+                    <NavDropdown.Item>All Products</NavDropdown.Item>
+                  </LinkContainer>
                   <NavDropdown.Item href="#action/3.1">
                     Most Popular
                   </NavDropdown.Item>
@@ -96,21 +102,18 @@ const Header = () => {
               </Nav>
               {user ? (
                 <Nav>
-                  <NavDropdown
-                    title={
-                      profile?.first_name ? profile?.first_name : "Welcome"
-                    }
-                    id="username"
-                  >
+                  <NavDropdown title={profile?.first_name} id="username">
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
                     <NavDropdown.Item onClick={logoutHandler}>
                       Sign Out
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                      Another action
-                    </NavDropdown.Item>
+                    {profile?.is_seller === true ? (
+                      <NavDropdown.Item href={`/${profile.username}/products`}>
+                        View My Products
+                      </NavDropdown.Item>
+                    ) : null}
                     <NavDropdown.Item href="#action/3.3">
                       Something
                     </NavDropdown.Item>
@@ -119,8 +122,10 @@ const Header = () => {
                       Separated link
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link>
+                  <Nav.Link className="d-flex align-items-center">
+                    Cart
                     <HiOutlineShoppingBag
+                      className="ms-2 me-2"
                       style={{ fontSize: "22px", color: "#ffc107" }}
                     />
                   </Nav.Link>
@@ -142,19 +147,19 @@ const Header = () => {
         </Navbar>
         <Navbar
           fixed="top"
-          expand="lg"
+          expand={true}
           collapseOnSelect
           className="bg-body-tertiary search-bar"
           style={{
-            top: `${topNavbarHeight}px`,
+            top: `${topNavbarHeight - 1}px`,
             zIndex: 1010,
           }}
         >
+          <NavbarBrand as="h1" className="ms-4 me-0">
+            Keppler
+          </NavbarBrand>
           <Container>
             <Form className="d-flex justify-content-center align-items-center w-100">
-              {/* <NavbarBrand as="h1" className="me-2 mb-0">
-                Keppler
-              </NavbarBrand> */}
               <h4 className="me-2 mb-0" style={{ color: "#2190FF" }}>
                 Search
               </h4>
@@ -167,7 +172,6 @@ const Header = () => {
                 <FormControl
                   type="search"
                   aria-label="Search"
-                  // placeholder="Keppler"
                   style={{ width: "100%", height: "40px" }}
                 />
                 <IoSearchSharp className="search-icon" />
@@ -176,6 +180,47 @@ const Header = () => {
           </Container>
         </Navbar>
       </header>
+      <Offcanvas
+        show={showDrawer}
+        onHide={handleCloseDrawer}
+        placement="start"
+        style={{ width: "20%" }}
+      >
+        <Offcanvas.Header style={{ backgroundColor: "#ffc107" }} closeButton>
+          <Offcanvas.Title className="d-flex align-items-center">
+            {profile.profile_photo ? (
+              <>
+                <Image
+                  src={profile.profile_photo}
+                  roundedCircle
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    marginRight: "10px",
+                    objectFit: "cover",
+                  }}
+                />
+                {"Hey, " + profile.first_name}
+              </>
+            ) : (
+              "Keppler"
+            )}
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav defaultActiveKey="/home" className="flex-column">
+            <LinkContainer className="drawer-links" to="/">
+              <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+            <LinkContainer className="drawer-links" to="/products">
+              <Nav.Link>Products</Nav.Link>
+            </LinkContainer>
+            <LinkContainer className="drawer-links" to="/">
+              <Nav.Link>Countries</Nav.Link>
+            </LinkContainer>
+          </Nav>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 };

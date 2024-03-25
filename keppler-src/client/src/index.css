@@ -60,6 +60,25 @@ a {
 .nav-adjusted {
 	margin-left: 60px;
 }
+.drawer-links {
+	color: black !important;
+	font-size: large; 
+	font-weight: 400;
+}
+.nav-link:hover {
+	box-shadow: 0 0 0 1px white inset;
+	border-radius: 5px; 
+}
+.drawer-links:hover {
+	box-shadow: 0 0 0 1px black inset;
+	border-radius: 5px; 
+}
+  
+/* profile */
+.profile-image {
+	object-fit: cover;
+
+}
 
 /* homepage */
 .home-container {
@@ -425,6 +444,15 @@ a {
 	font-size: medium;
 	color: black;
 }
+.product-edit-button{
+	color: #ffc107;
+	border: 1px solid #ffc107;
+	margin: 2px;
+}
+.product-edit-button:hover {
+	color: white ;
+	background-color: #ffc107;
+}
 
 /* Responsive adjustments */
 /* For tablets/ipad screens */
@@ -552,6 +580,39 @@ a {
 .page-item.active .page-link {
 	background-color: #ffc107 !important; 
 	border-color: #ffc107 !important;
+}
+
+/* edit product page */
+.edit-product-card {
+	width: 100%;
+	max-width: 30rem;
+	height: auto;
+	margin-bottom: 15px;
+	border: none;
+}
+.edit-product-card img {
+	height: 19rem;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 0px;
+	cursor: pointer;
+}
+.edit-additional-card {
+	width: 100%;
+	max-width: 15rem;
+	height: auto;
+	border: none;
+}
+.edit-additional-card img {
+	height: 9rem;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 0px;
+	cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.edit-additional-card img:hover {
+    transform: scale(1.05);
 }
 
 /* footer */

@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/SingleProductPage";
+import SellerProductsPage from "./pages/SellerProductsPage";
+import UpdateProductPage from "./pages/UpdateProductPage";
 import NotFound from "./components/NotFound";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -18,7 +20,7 @@ import { getProfile } from "./features/profiles/profileSlice";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.profile);
+  const { profile, isLoading } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
@@ -36,6 +38,11 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:slug" element={<ProductPage />} />
+          <Route
+            path={`/${profile.username}/products`}
+            element={<SellerProductsPage />}
+          />
+          <Route path={`/edit-product/:slug`} element={<UpdateProductPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/activate/:uid/:token" element={<ActivationPage />} />

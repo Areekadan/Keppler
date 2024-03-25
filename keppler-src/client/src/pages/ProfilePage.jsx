@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
@@ -70,12 +70,14 @@ const ProfilePage = () => {
               {profile.profile_photo && (
                 <Row className="mb-4">
                   <Col className="text-center">
-                    <img
-                      src={profile.profile_photo}
-                      alt="Profile"
-                      className="img-fluid rounded-circle"
-                      style={{ maxWidth: "150px", maxHeight: "150px" }}
-                    />
+                    {profile.profile_photo && (
+                      <Image
+                        className="profile-image border"
+                        src={profile.profile_photo}
+                        roundedCircle
+                        style={{ width: "150px", height: "150px" }}
+                      />
+                    )}
                   </Col>
                 </Row>
               )}
