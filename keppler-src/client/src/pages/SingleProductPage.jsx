@@ -21,6 +21,7 @@ import {
 import { priceWithCommas } from "../utils";
 import ReviewModal from "../components/ReviewModal";
 import ReviewsList from "../components/ReviewsList";
+import Title from "../components/Title";
 
 const SingleProductPage = () => {
   const { slug } = useParams();
@@ -51,117 +52,124 @@ const SingleProductPage = () => {
     setShowReviewModal(false);
   };
 
-  if (isLoading || !product) {
+  if (isLoading) {
     return <Spinner />;
   }
   return (
-    <Container className="mg-top">
-      <Row>
-        <Col lg={6} className="mb-4 mt-2">
-          <Card className="single-product-card">
-            <Card.Img
-              variant="top"
-              src={product.cover_photo}
-              alt={product.title}
-            />
-          </Card>
-          <Row>
-            {[
-              product.photo1,
-              product.photo2,
-              product.photo3,
-              product.photo4,
-            ].map((photo, index) =>
-              photo ? (
-                <Col key={index} xs={6} md={6} lg={3}>
-                  <Card className="additional-image-card">
-                    <Card.Img
-                      variant="top"
-                      src={photo}
-                      alt={`Product image ${index + 1}`}
-                    />
-                  </Card>
-                </Col>
-              ) : null
-            )}
-          </Row>
-        </Col>
-        <Col lg={6} className="mt-2">
-          <h3>{product.title}</h3>
-          <div className="d-flex justify-content-start align-items-center mb-2">
-            <Badge bg="success" className="me-2">
-              {product.country}, {product.city}
-            </Badge>
-            {product.advert_type !== "Other" && (
+    <>
+      <Title
+        title="Keppler Global Product"
+        description={product.description}
+        keywords="global shopping, international product, worldwide marketplace, online shopping, electronics, fashion, home goods, international brands, local crafts, Keppler products"
+      />
+      <Container className="mg-top">
+        <Row>
+          <Col lg={6} className="mb-4 mt-2">
+            <Card className="single-product-card">
+              <Card.Img
+                variant="top"
+                src={product.cover_photo}
+                alt={product.title}
+              />
+            </Card>
+            <Row>
+              {[
+                product.photo1,
+                product.photo2,
+                product.photo3,
+                product.photo4,
+              ].map((photo, index) =>
+                photo ? (
+                  <Col key={index} xs={6} md={6} lg={3}>
+                    <Card className="additional-image-card">
+                      <Card.Img
+                        variant="top"
+                        src={photo}
+                        alt={`Product image ${index + 1}`}
+                      />
+                    </Card>
+                  </Col>
+                ) : null
+              )}
+            </Row>
+          </Col>
+          <Col lg={6} className="mt-2">
+            <h3>{product.title}</h3>
+            <div className="d-flex justify-content-start align-items-center mb-2">
               <Badge bg="success" className="me-2">
-                {product.advert_type}
+                {product.country}, {product.city}
               </Badge>
-            )}
-            {product.product_type !== "Other" && (
+              {product.advert_type !== "Other" && (
+                <Badge bg="success" className="me-2">
+                  {product.advert_type}
+                </Badge>
+              )}
+              {product.product_type !== "Other" && (
+                <Badge bg="success" className="me-2">
+                  {product.product_type}
+                </Badge>
+              )}
               <Badge bg="success" className="me-2">
-                {product.product_type}
+                {product.product_status}
               </Badge>
-            )}
-            <Badge bg="success" className="me-2">
-              {product.product_status}
-            </Badge>
-          </div>
-          <div className="ratings-and-views-container">
-            <div
-              className="text-center d-flex align-items-start justify-content-center product-rating-and-reviews"
-              ref={target}
-              onMouseEnter={() => setShow(true)}
-              onMouseLeave={() => setShow(false)}
-            >
-              <span className="me-1">{product.average_rating}</span>
-              <StarRating rating={product.average_rating} />
-              <OverlayTrigger
-                placement="bottom"
-                show={show}
-                target={target.current}
-                overlay={<ProductToolTip product={product} />}
-              >
-                <sub
-                  className="ms-1"
-                  style={{ color: "blue", cursor: "pointer" }}
-                >
-                  ({product.review_count} reviews) <IoChevronDown />
-                </sub>
-              </OverlayTrigger>
             </div>
-          </div>
-          <h3 style={{ fontWeight: "bold" }}>${formattedPrice}</h3>
-          <p>{product.description}</p>
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={12} className="mt-2">
-          <hr className="mb-5"></hr>
-          <div className="d-flex aligh-items-center justify-content-center">
-            <h2>Customer Reviews</h2>
-            <Button
-              className="ms-4"
-              variant="primary"
-              onClick={() => {
-                if (profile.username) {
-                  setShowReviewModal(true);
-                } else {
-                  navigate("/login");
-                }
-              }}
-            >
-              Leave a Review
-            </Button>
-          </div>
-          <ReviewsList reviews={product.reviews || []} />
-          <ReviewModal
-            show={showReviewModal}
-            handleClose={() => setShowReviewModal(false)}
-            submitReview={handleReviewSubmit}
-          />
-        </Col>
-      </Row>
-    </Container>
+            <div className="ratings-and-views-container">
+              <div
+                className="text-center d-flex align-items-start justify-content-center product-rating-and-reviews"
+                ref={target}
+                onMouseEnter={() => setShow(true)}
+                onMouseLeave={() => setShow(false)}
+              >
+                <span className="me-1">{product.average_rating}</span>
+                <StarRating rating={product.average_rating} />
+                <OverlayTrigger
+                  placement="bottom"
+                  show={show}
+                  target={target.current}
+                  overlay={<ProductToolTip product={product} />}
+                >
+                  <sub
+                    className="ms-1"
+                    style={{ color: "blue", cursor: "pointer" }}
+                  >
+                    ({product.review_count} reviews) <IoChevronDown />
+                  </sub>
+                </OverlayTrigger>
+              </div>
+            </div>
+            <h3 style={{ fontWeight: "bold" }}>${formattedPrice}</h3>
+            <p>{product.description}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={12} className="mt-2">
+            <hr className="mb-5"></hr>
+            <div className="d-flex aligh-items-center justify-content-center">
+              <h2>Customer Reviews</h2>
+              <Button
+                className="ms-4"
+                variant="primary"
+                onClick={() => {
+                  if (profile.username) {
+                    setShowReviewModal(true);
+                  } else {
+                    navigate("/login");
+                  }
+                }}
+              >
+                Leave a Review
+              </Button>
+            </div>
+            <ReviewsList reviews={product.reviews || []} />
+            <ReviewModal
+              show={showReviewModal}
+              handleClose={() => setShowReviewModal(false)}
+              submitReview={handleReviewSubmit}
+            />
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

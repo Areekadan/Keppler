@@ -64,6 +64,61 @@ export const reviewProduct = createAsyncThunk(
   }
 );
 
+export const getSellerProducts = createAsyncThunk(
+  "products/getSellers",
+  async (_, thunkAPI) => {
+    try {
+      return await productAPI.getSellerProducts();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "product/update",
+  async ({ slug, productData }, thunkAPI) => {
+    try {
+      const response = await productAPI.updateProduct(slug, productData);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const uploadProductImages = createAsyncThunk(
+  "products/uploadImages",
+  async ({ productData }, thunkAPI) => {
+    try {
+      const response = await productAPI.uploadProductImages(productData);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -109,6 +164,47 @@ export const productSlice = createSlice({
         state.profile = action.payload;
       })
       .addCase(reviewProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getSellerProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSellerProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.products = action.payload.results;
+      })
+      .addCase(getSellerProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(uploadProductImages.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+      })
+      .addCase(uploadProductImages.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(uploadProductImages.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;

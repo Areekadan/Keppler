@@ -15,6 +15,28 @@ const reviewProduct = async (id, reviewData) => {
   return response.data;
 };
 
-const productAPI = { getProducts, getOneProduct, reviewProduct };
+const getSellerProducts = async () => {
+  const response = await api.get("/products/sellers/");
+  return response.data;
+};
+
+const updateProduct = async (slug, productData) => {
+  const response = await api.put(`/products/update/${slug}/`, productData);
+  return response.data;
+};
+
+const uploadProductImages = async (productData) => {
+  const response = await api.post("/products/upload-image/", productData);
+  return response.data;
+};
+
+const productAPI = {
+  getProducts,
+  getOneProduct,
+  reviewProduct,
+  getSellerProducts,
+  updateProduct,
+  uploadProductImages,
+};
 
 export default productAPI;

@@ -23,6 +23,9 @@ migrate:
 makemigrations:
 	docker compose exec api python3 manage.py makemigrations
 
+prune:
+	docker system prune
+
 superuser:
 	docker compose exec api python3 manage.py createsuperuser
 

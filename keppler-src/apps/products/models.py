@@ -107,7 +107,6 @@ class Product(TimeStampedUUIDModel):
         decimal_places=2,
         default=0.05,
         validators=[MinValueValidator(0.0)],
-        help_text="5% goods and services tax charged",
     )
     cover_photo = models.ImageField(
         verbose_name=_("Main Product Image"),

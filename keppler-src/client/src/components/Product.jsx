@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
-import { Badge, Button, Card, OverlayTrigger } from "react-bootstrap";
+import { Badge, Card, OverlayTrigger, Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaEdit } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import StarRating from "./StarRating";
 import ProductToolTip from "./RatingToolTip";
@@ -10,15 +11,28 @@ import { priceWithCommas, truncateText } from "../utils";
 const Product = ({ product }) => {
   const [show, setShow] = useState(false);
   const target = useRef(null);
+  const { profile } = useSelector((state) => state.profile);
   const truncatedText = truncateText(product.title, 121);
   const formattedPrice = priceWithCommas(Number(product.price));
+
   return (
     <Card className="product-card">
       <Badge bg="success" className="product-badge">
         {product.country}
-        {","} {product.city}
+        {", "}
+        {product.city}
       </Badge>
-      <Card.Img src={product.cover_photo} variant="top"></Card.Img>
+      {product.user === profile?.username && (
+        <Link
+          to={`/edit-product/${product.slug}`}
+          className="position-absolute top-0 start-0 m-0"
+        >
+          <Button className="product-edit-button" variant="outline" size="sm">
+            <FaEdit /> Edit
+          </Button>
+        </Link>
+      )}
+      <Card.Img src={product.cover_photo} variant="top" />
       <Card.Body className="product-card-body">
         <Link
           className="text-dark text-decoration-none"
@@ -43,13 +57,11 @@ const Product = ({ product }) => {
                 placement="bottom"
                 show={show}
                 target={target.current}
-                overlay={(props) => (
-                  <ProductToolTip product={product} {...props} />
-                )}
+                overlay={<ProductToolTip product={product} />}
               >
                 <div style={{ cursor: "pointer" }}>
-                  ({product.review_count})
-                  <IoChevronDown />
+                  {" "}
+                  ({product.review_count}) <IoChevronDown />
                 </div>
               </OverlayTrigger>
             </sub>
