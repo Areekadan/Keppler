@@ -104,22 +104,23 @@ const Header = () => {
                 <Nav>
                   <NavDropdown title={profile?.first_name} id="username">
                     <LinkContainer to="/profile">
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                      <NavDropdown.Item>View Profile</NavDropdown.Item>
                     </LinkContainer>
+                    {profile?.is_seller === true ? (
+                      <>
+                        <NavDropdown.Item
+                          href={`/${profile.username}/products`}
+                        >
+                          View My Products
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href={`/products/add-new`}>
+                          Add Product
+                        </NavDropdown.Item>
+                      </>
+                    ) : null}
+                    <NavDropdown.Divider />
                     <NavDropdown.Item onClick={logoutHandler}>
                       Sign Out
-                    </NavDropdown.Item>
-                    {profile?.is_seller === true ? (
-                      <NavDropdown.Item href={`/${profile.username}/products`}>
-                        View My Products
-                      </NavDropdown.Item>
-                    ) : null}
-                    <NavDropdown.Item href="#action/3.3">
-                      Something
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">
-                      Separated link
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link className="d-flex align-items-center">

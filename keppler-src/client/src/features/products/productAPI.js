@@ -30,6 +30,20 @@ const uploadProductImages = async (productData) => {
   return response.data;
 };
 
+const createProduct = async (productData) => {
+  const response = await api.post("/products/create/", productData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+const deleteProduct = async (slug) => {
+  const response = await api.delete(`/products/delete/${slug}/`);
+  return;
+};
+
 const productAPI = {
   getProducts,
   getOneProduct,
@@ -37,6 +51,8 @@ const productAPI = {
   getSellerProducts,
   updateProduct,
   uploadProductImages,
+  createProduct,
+  deleteProduct,
 };
 
 export default productAPI;
