@@ -35,14 +35,12 @@ export const updateProfile = createAsyncThunk(
       const response = await profileAPI.updateProfile(username, profileData);
       return response;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
+      let errorMessage = "An unexpected error occurred.";
+      if (error.response && error.response.data) {
+        // Adjust this to match the structure of your API's error response
+        errorMessage = error.response.data;
+      }
+      return thunkAPI.rejectWithValue(errorMessage);
     }
   }
 );
@@ -60,6 +58,7 @@ export const profileSlice = createSlice({
         state.isSuccess = false;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
+        state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
         state.profile = action.payload.profile;

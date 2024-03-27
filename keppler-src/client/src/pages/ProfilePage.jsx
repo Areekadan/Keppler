@@ -45,13 +45,33 @@ const ProfilePage = () => {
     if (profilePhoto) {
       updatedProfileData.append("profile_photo", profilePhoto);
     }
-    await dispatch(
-      updateProfile({
-        username: profile.username,
-        profileData: updatedProfileData,
-      })
-    );
-    dispatch(getProfile());
+
+    try {
+      await dispatch(
+        updateProfile({
+          username: profile.username,
+          profileData: updatedProfileData,
+        })
+      ).unwrap();
+      dispatch(getProfile());
+      toast.success("Profile updated successfully");
+    } catch (rejectedValueOrSerializedError) {
+      console.log(rejectedValueOrSerializedError);
+      if (rejectedValueOrSerializedError.hasOwnProperty("profile")) {
+        Object.keys(rejectedValueOrSerializedError.profile).forEach((key) => {
+          const errorMessage = rejectedValueOrSerializedError.profile[key][0];
+          toast.error(`${key}: ${errorMessage}`);
+        });
+      } else {
+        let errorMessage = "An unexpected error occurred.";
+        if (typeof rejectedValueOrSerializedError === "string") {
+          errorMessage = rejectedValueOrSerializedError;
+        } else if (rejectedValueOrSerializedError.hasOwnProperty("message")) {
+          errorMessage = rejectedValueOrSerializedError.message;
+        }
+        toast.error(errorMessage);
+      }
+    }
   };
 
   if (isLoading) {

@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/SingleProductPage";
+import AddProductPage from "./pages/AddProductPage";
 import SellerProductsPage from "./pages/SellerProductsPage";
 import UpdateProductPage from "./pages/UpdateProductPage";
 import NotFound from "./components/NotFound";
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:slug" element={<ProductPage />} />
+          <Route path="/products/add-new" element={<AddProductPage />} />
           <Route
             path={`/${profile.username}/products`}
             element={<SellerProductsPage />}
