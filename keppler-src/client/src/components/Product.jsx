@@ -18,9 +18,9 @@ const Product = ({ product }) => {
   return (
     <Card className="product-card">
       <Badge bg="success" className="product-badge">
-        {product.country}
+        {product.country.name}
         {", "}
-        {product.city}
+        {product.city.name}
       </Badge>
       {product.user === profile?.username && (
         <Link

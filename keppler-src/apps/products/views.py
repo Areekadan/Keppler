@@ -2,6 +2,7 @@ import logging
 
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 from rest_framework import filters, generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -15,6 +16,8 @@ from .serializers import (
     ProductSerializer,
     ProductViewSerializer,
 )
+from cities_light.models import Country, City, Region
+from .serializers import CountrySerializer, CitySerializer, RegionSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +51,7 @@ class ListAllProductsAPIView(generics.ListAPIView):
         filters.OrderingFilter,
     ]
     filterset_class = ProductFilter
-    search_fields = ["country", "city"]
+    search_fields = ["country", "city", "region"]
     ordering_fields = ["created_at"]
 
 
@@ -61,7 +64,7 @@ class ListSellersProductsAPIView(generics.ListAPIView):
         filters.OrderingFilter,
     ]
     filterset_class = ProductFilter
-    search_fields = ["country", "city"]
+    search_fields = ["country", "city", "region"]
     ordering_fields = ["created_at"]
 
     def get_queryset(self):
@@ -199,37 +202,81 @@ class ProductSearchAPIView(APIView):
         queryset = Product.objects.filter(published_status=True)
         data = self.request.data
 
-        advert_type = data["advert_type"]
-        queryset = queryset.filter(advert_type__iexact=advert_type)
+        advert_type = data.get("advert_type")
+        if advert_type:
+            queryset = queryset.filter(advert_type__iexact=advert_type)
 
-        product_type = data["product_type"]
-        queryset = queryset.filter(product_type__iexact=product_type)
+        product_type = data.get("product_type")
+        if product_type:
+            queryset = queryset.filter(product_type__iexact=product_type)
 
-        product_status = data["product_status"]
-        queryset = queryset.filter(product_status__iexact=product_status)
+        product_status = data.get("product_status")
+        if product_status:
+            queryset = queryset.filter(product_status__iexact=product_status)
 
-        price = data["price"]
-        if price == "$0+":
-            price = 0
-        elif price == "$50+":
-            price = 50
-        elif price == "$100+":
-            price = 100
-        elif price == "$500+":
-            price = 500
-        elif price == "$1000":
-            price = 1000
-        elif price == "$5000+":
-            price = 5000
-        elif price == "Any":
-            price = -1
+        price = data.get("price")
+        if price:
+            if price == "$0+":
+                price = 0
+            elif price == "$50+":
+                price = 50
+            elif price == "$100+":
+                price = 100
+            elif price == "$500+":
+                price = 500
+            elif price == "$1000":
+                price = 1000
+            elif price == "$5000+":
+                price = 5000
+            elif price == "Any":
+                price = -1
 
-        if price != -1:
-            queryset = queryset.filter(price__gte=price)
+            if price != -1:
+                queryset = queryset.filter(price__gte=price)
 
-        catch_phrase = data["catch_phrase"]
-        queryset = queryset.filter(description__icontains=catch_phrase)
+        catch_phrase = data.get("catch_phrase")
+        if catch_phrase:
+            queryset = queryset.filter(
+                Q(description__icontains=catch_phrase)
+                | Q(title__icontains=catch_phrase)
+                | Q(advert_type__iexact=catch_phrase)
+                | Q(product_type__iexact=catch_phrase)
+            )
 
         serializer = ProductSerializer(queryset, many=True)
 
         return Response(serializer.data)
+
+
+class CountriesWithProductsListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CountrySerializer
+
+    def get_queryset(self):
+        country_ids = Product.objects.values_list("country", flat=True).distinct()
+        queryset = Country.objects.filter(id__in=country_ids).order_by("name")
+        return queryset
+
+
+class CountryListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CountrySerializer
+    queryset = Country.objects.all().order_by("name")
+
+
+class RegionsForCountryAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = RegionSerializer
+
+    def get_queryset(self):
+        country_id = self.kwargs.get("country_id")
+        return Region.objects.filter(country_id=country_id).order_by("name")
+
+
+class CitiesForRegionAPIView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CitySerializer
+
+    def get_queryset(self):
+        region_id = self.kwargs.get("region_id")
+        return City.objects.filter(region_id=region_id).order_by("name")

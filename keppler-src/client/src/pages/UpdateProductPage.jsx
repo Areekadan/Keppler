@@ -56,8 +56,8 @@ const UpdateProductPage = () => {
       setProductData({
         title: product.title,
         description: product.description,
-        country: product.country,
-        city: product.city,
+        country: product.country.name,
+        city: product.city.name,
         price: product.price,
         quantity: product.quantity,
         tax: product.tax,

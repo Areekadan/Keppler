@@ -44,6 +44,31 @@ const deleteProduct = async (slug) => {
   return;
 };
 
+const searchProducts = async (searchParams) => {
+  const response = await api.post("/products/search/", searchParams);
+  return response.data;
+};
+
+const getCountriesWithProductsList = async () => {
+  const response = await api.get("/products/countries-with-products/");
+  return response.data;
+};
+
+const getProductCountryList = async () => {
+  const response = await api.get("/products/countries/");
+  return response.data;
+};
+
+const getProductRegionList = async (countryID) => {
+  const response = await api.get(`/products/regions/${countryID}`);
+  return response.data;
+};
+
+const getProductCityList = async (regionID) => {
+  const response = await api.get(`/products/cities/${regionID}`);
+  return response.data;
+};
+
 const productAPI = {
   getProducts,
   getOneProduct,
@@ -53,6 +78,11 @@ const productAPI = {
   uploadProductImages,
   createProduct,
   deleteProduct,
+  searchProducts,
+  getCountriesWithProductsList,
+  getProductCountryList,
+  getProductRegionList,
+  getProductCityList,
 };
 
 export default productAPI;

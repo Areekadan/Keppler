@@ -7,7 +7,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
-from django_countries.fields import CountryField
+from cities_light.models import Country, City, Region
 
 from apps.common.models import TimeStampedUUIDModel
 
@@ -79,10 +79,27 @@ class Product(TimeStampedUUIDModel):
         verbose_name=_("Product Description"),
         default="Introducing the all-new and phenominal product of the century.",
     )
-    country = CountryField(
-        verbose_name=_("Country"), default="CA", blank_label="(Select a Country)"
+    country = models.ForeignKey(
+        Country,
+        verbose_name=_("Country"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
     )
-    city = models.CharField(verbose_name=_("City"), max_length=180, default="Edmonton")
+    region = models.ForeignKey(
+        Region,
+        verbose_name=_("Region/State"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+    )
+    city = models.ForeignKey(
+        City,
+        verbose_name=_("City"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+    )
     postal_code = models.CharField(
         verbose_name=_("Postal Code"), max_length=100, default="T6Y2V5"
     )

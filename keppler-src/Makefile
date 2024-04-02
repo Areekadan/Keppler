@@ -23,6 +23,9 @@ migrate:
 makemigrations:
 	docker compose exec api python3 manage.py makemigrations
 
+flush: 
+	docker compose exec api python3 manage.py flush
+
 prune:
 	docker system prune
 
