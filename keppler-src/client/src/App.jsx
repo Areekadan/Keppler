@@ -16,6 +16,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ActivationPage from "./pages/ActivationPage";
 import ProfilePage from "./pages/ProfilePage";
+import SearchResults from "./pages/SearchResults";
 import Spinner from "./components/Spinner";
 import { getProfile } from "./features/profiles/profileSlice";
 
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:slug" element={<ProductPage />} />
+          <Route path="/products/search" element={<SearchResults />} />
           <Route path="/products/add-new" element={<AddProductPage />} />
           <Route
             path={`/${profile.username}/products`}

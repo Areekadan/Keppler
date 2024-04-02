@@ -37,7 +37,6 @@ export const updateProfile = createAsyncThunk(
     } catch (error) {
       let errorMessage = "An unexpected error occurred.";
       if (error.response && error.response.data) {
-        // Adjust this to match the structure of your API's error response
         errorMessage = error.response.data;
       }
       return thunkAPI.rejectWithValue(errorMessage);

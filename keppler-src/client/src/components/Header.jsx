@@ -4,8 +4,6 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-  Form,
-  FormControl,
   Button,
   NavbarBrand,
   Offcanvas,
@@ -14,10 +12,11 @@ import {
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { IoSearchSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { logout, reset } from "../features/auth/authSlice";
+import SearchComponent from "./SearchProducts";
+import { getCountriesWithProductsList } from "../features/products/productSlice";
 
 const Header = () => {
   const topNavbarRef = useRef(null);
@@ -34,6 +33,15 @@ const Header = () => {
     dispatch(reset());
     navigate("/");
   };
+  const [countries, setCountries] = useState([]);
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const data = await dispatch(getCountriesWithProductsList()).unwrap();
+      setCountries(data);
+    };
+
+    fetchCountries();
+  }, [dispatch]);
   useEffect(() => {
     const updateTopNavbarHeight = () => {
       if (topNavbarRef.current) {
@@ -79,10 +87,13 @@ const Header = () => {
                 <LinkContainer className="nav-adjusted" to="/">
                   <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
-                <NavDropdown
-                  title="Countries"
-                  id="basic-nav-dropdown"
-                ></NavDropdown>
+                <NavDropdown title="Countries" id="basic-nav-dropdown">
+                  {countries.map((country) => (
+                    <NavDropdown.Item key={country.id}>
+                      {country.name}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
                 <NavDropdown title="Products" id="basic-nav-dropdown">
                   <LinkContainer to="/products">
                     <NavDropdown.Item>All Products</NavDropdown.Item>
@@ -160,24 +171,7 @@ const Header = () => {
             Keppler
           </NavbarBrand>
           <Container>
-            <Form className="d-flex justify-content-center align-items-center w-100">
-              <h4 className="me-2 mb-0" style={{ color: "#2190FF" }}>
-                Search
-              </h4>
-              <div
-                style={{
-                  position: "relative",
-                  width: "70%",
-                }}
-              >
-                <FormControl
-                  type="search"
-                  aria-label="Search"
-                  style={{ width: "100%", height: "40px" }}
-                />
-                <IoSearchSharp className="search-icon" />
-              </div>
-            </Form>
+            <SearchComponent />
           </Container>
         </Navbar>
       </header>

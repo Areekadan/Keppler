@@ -1,15 +1,36 @@
 from django_countries.serializer_fields import CountryField
 from django_countries.serializers import CountryFieldMixin
 from rest_framework import serializers
+from cities_light.models import Country, City, Region
 
 from apps.reviews.serializers import ReviewSerializer
 
 from .models import Product, ProductViews
 
 
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ["id", "name"]
+
+
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ["id", "name"]
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ["id", "name"]
+
+
 class ProductSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    country = CountryField(name_only=True)
+    country = CountrySerializer(read_only=True)
+    region = RegionSerializer(read_only=True)
+    city = CitySerializer(read_only=True)
     reviews = serializers.SerializerMethodField(read_only=True)
     profile_photo = serializers.SerializerMethodField()
     cover_photo = serializers.SerializerMethodField()
@@ -28,6 +49,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "ref_code",
             "description",
             "country",
+            "region",
             "city",
             "postal_code",
             "street_address",
@@ -83,11 +105,19 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
-    country = CountryField(name_only=True)
+    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
+    region = serializers.PrimaryKeyRelatedField(
+        queryset=Region.objects.all(), allow_null=True
+    )
+    city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
 
     class Meta:
         model = Product
         exclude = ["updated_at", "pkid"]
+
+    def create(self, validated_data):
+        product = Product.objects.create(**validated_data)
+        return product
 
 
 class ProductViewSerializer(serializers.ModelSerializer):

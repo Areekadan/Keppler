@@ -25,4 +25,20 @@ urlpatterns = [
         name="delete-product",
     ),
     path("search/", views.ProductSearchAPIView.as_view(), name="product-search"),
+    path(
+        "countries-with-products/",
+        views.CountriesWithProductsListView.as_view(),
+        name="countries-with-products",
+    ),
+    path("countries/", views.CountryListView.as_view(), name="country-list"),
+    path(
+        "regions/<int:country_id>/",
+        views.RegionsForCountryAPIView.as_view(),
+        name="regions-for-country",
+    ),
+    path(
+        "cities/<int:region_id>/",
+        views.CitiesForRegionAPIView.as_view(),
+        name="cities-for-region",
+    ),
 ]

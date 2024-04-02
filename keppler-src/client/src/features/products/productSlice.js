@@ -155,6 +155,96 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const searchProducts = createAsyncThunk(
+  "products/searchProducts",
+  async (searchParams, thunkAPI) => {
+    try {
+      const response = await productAPI.searchProducts(searchParams);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getCountriesWithProductsList = createAsyncThunk(
+  "products/getCountryList",
+  async (_, thunkAPI) => {
+    try {
+      return await productAPI.getCountriesWithProductsList();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getProductCountryList = createAsyncThunk(
+  "products/getCountryList",
+  async (_, thunkAPI) => {
+    try {
+      return await productAPI.getProductCountryList();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getProductRegionList = createAsyncThunk(
+  "products/getRegionList",
+  async ({ countryID }, thunkAPI) => {
+    try {
+      return await productAPI.getProductRegionList(countryID);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getProductCityList = createAsyncThunk(
+  "products/getCityList",
+  async ({ regionID }, thunkAPI) => {
+    try {
+      return await productAPI.getProductCityList(regionID);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -263,6 +353,22 @@ export const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.products = action.payload;
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

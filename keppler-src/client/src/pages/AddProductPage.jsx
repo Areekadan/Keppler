@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Form, Button, Row, Col, Card, Container } from "react-bootstrap";
-import { createProduct } from "../features/products/productSlice";
+import {
+  createProduct,
+  getProductCountryList,
+  getProductRegionList,
+  getProductCityList,
+} from "../features/products/productSlice";
 
 const AddProductPage = () => {
   const dispatch = useDispatch();
@@ -48,6 +53,7 @@ const AddProductPage = () => {
     title: "",
     description: "",
     country: "",
+    region: "",
     city: "",
     price: "",
     quantity: "",
@@ -61,6 +67,10 @@ const AddProductPage = () => {
     product_status: "Active",
   });
 
+  const [countries, setCountries] = useState([]);
+  const [regions, setRegions] = useState([]);
+  const [cities, setCities] = useState([]);
+
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [photo1, setPhoto1] = useState(null);
   const [photo2, setPhoto2] = useState(null);
@@ -72,6 +82,31 @@ const AddProductPage = () => {
   const [photo2Preview, setPhoto2Preview] = useState("");
   const [photo3Preview, setPhoto3Preview] = useState("");
   const [photo4Preview, setPhoto4Preview] = useState("");
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const data = await dispatch(getProductCountryList()).unwrap();
+      setCountries(data);
+    };
+
+    fetchCountries();
+  }, [dispatch]);
+
+  const handleCountryChange = async (e) => {
+    const countryID = e.target.value;
+    setProductData({ ...productData, country: countryID });
+
+    const data = await dispatch(getProductRegionList({ countryID })).unwrap();
+    setRegions(data);
+  };
+
+  const handleRegionChange = async (e) => {
+    const regionID = e.target.value;
+    setProductData({ ...productData, region: regionID });
+
+    const data = await dispatch(getProductCityList({ regionID })).unwrap();
+    setCities(data);
+  };
 
   const handleInputChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -95,6 +130,7 @@ const AddProductPage = () => {
     const formData = new FormData();
 
     Object.keys(productData).forEach((key) => {
+      console.log(key, productData[key]);
       formData.append(key, productData[key]);
     });
     if (coverPhoto) formData.append("cover_photo", coverPhoto);
@@ -166,23 +202,51 @@ const AddProductPage = () => {
             <Row className="mb-3">
               <Col sm={6}>
                 <Form.Label>Country</Form.Label>
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="country"
                   required
                   value={productData.country}
-                  onChange={handleInputChange}
-                />
+                  onChange={handleCountryChange}
+                >
+                  <option value="">Select a country</option>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col sm={6}>
+                <Form.Label>Region</Form.Label>
+                <Form.Select
+                  name="region"
+                  required
+                  value={productData.region}
+                  onChange={handleRegionChange}
+                >
+                  <option value="">Select a region/state</option>
+                  {regions.map((region) => (
+                    <option key={region.id} value={region.id}>
+                      {region.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </Col>
               <Col sm={6}>
                 <Form.Label>City</Form.Label>
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="city"
                   required
                   value={productData.city}
                   onChange={handleInputChange}
-                />
+                >
+                  <option value="">Select a city</option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                      {city.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </Col>
             </Row>
             <Row className="mb-3">
