@@ -97,7 +97,7 @@ const SingleProductPage = () => {
             <h3>{product.title}</h3>
             <div className="d-flex justify-content-start align-items-center mb-2">
               <Badge bg="success" className="me-2">
-                {product.country}, {product.city}
+                {product.country?.name}, {product.city?.name}
               </Badge>
               {product.advert_type !== "Other" && (
                 <Badge bg="success" className="me-2">

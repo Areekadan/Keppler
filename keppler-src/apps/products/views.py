@@ -23,6 +23,10 @@ logger = logging.getLogger(__name__)
 
 
 class ProductFilter(django_filters.FilterSet):
+    country = django_filters.NumberFilter(field_name="country__id")
+    region = django_filters.NumberFilter(field_name="region__id")
+    city = django_filters.NumberFilter(field_name="city__id")
+    price = django_filters.CharFilter(method="filter_price")
     advert_type = django_filters.CharFilter(
         field_name="advert_type", lookup_expr="iexact"
     )
@@ -32,13 +36,35 @@ class ProductFilter(django_filters.FilterSet):
     product_status = django_filters.CharFilter(
         field_name="product_status", lookup_expr="iexact"
     )
-    price = django_filters.NumberFilter()
-    price__gt = django_filters.NumberFilter(field_name="price", lookup_expr="gt")
-    price__lt = django_filters.NumberFilter(field_name="price", lookup_expr="lt")
 
     class Meta:
         model = Product
-        fields = ["advert_type", "product_type", "product_status", "price"]
+        fields = [
+            "advert_type",
+            "product_type",
+            "product_status",
+            "price",
+            "country",
+            "region",
+            "city",
+        ]
+
+    def filter_price(self, queryset, name, value):
+        if value == "$0+":
+            return queryset.filter(price__gte=0, price__lte=50)
+        elif value == "$50+":
+            return queryset.filter(price__gte=50, price__lte=100)
+        elif value == "$100+":
+            return queryset.filter(price__gte=100, price__lte=500)
+        elif value == "$500+":
+            return queryset.filter(price__gte=500, price__lte=1000)
+        elif value == "$1000+":
+            return queryset.filter(price__gte=1000, price__lte=5000)
+        elif value == "$5000+":
+            return queryset.filter(price__gte=5000)
+        elif value == "Any":
+            return queryset
+        return queryset
 
 
 class ListAllProductsAPIView(generics.ListAPIView):
@@ -214,6 +240,10 @@ class ProductSearchAPIView(APIView):
         if product_status:
             queryset = queryset.filter(product_status__iexact=product_status)
 
+        country_id = data.get("country")
+        if country_id:
+            queryset = queryset.filter(country__id=country_id)
+
         price = data.get("price")
         if price:
             if price == "$0+":
@@ -224,7 +254,7 @@ class ProductSearchAPIView(APIView):
                 price = 100
             elif price == "$500+":
                 price = 500
-            elif price == "$1000":
+            elif price == "$1000+":
                 price = 1000
             elif price == "$5000+":
                 price = 5000
@@ -255,6 +285,26 @@ class CountriesWithProductsListView(generics.ListAPIView):
     def get_queryset(self):
         country_ids = Product.objects.values_list("country", flat=True).distinct()
         queryset = Country.objects.filter(id__in=country_ids).order_by("name")
+        return queryset
+
+
+class CitiesWithProductsListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CitySerializer
+
+    def get_queryset(self):
+        city_ids = Product.objects.values_list("city", flat=True).distinct()
+        queryset = City.objects.filter(id__in=city_ids).order_by("name")
+        return queryset
+
+
+class RegionsWithProductsListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CitySerializer
+
+    def get_queryset(self):
+        region_ids = Product.objects.values_list("region", flat=True).distinct()
+        queryset = Region.objects.filter(id__in=region_ids).order_by("name")
         return queryset
 
 

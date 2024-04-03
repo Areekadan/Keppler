@@ -4,6 +4,11 @@ import productAPI from "./productAPI";
 const initialState = {
   products: [],
   product: {},
+  locations: {
+    countries: [],
+    regions: [],
+    cities: [],
+  },
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -12,9 +17,10 @@ const initialState = {
 
 export const getProducts = createAsyncThunk(
   "products/getAll",
-  async (_, thunkAPI) => {
+  async (filterParams, thunkAPI) => {
     try {
-      return await productAPI.getProducts();
+      const queryString = new URLSearchParams(filterParams).toString();
+      return await productAPI.getProducts(`?${queryString}`);
     } catch (error) {
       const message =
         (error.response &&
@@ -173,11 +179,65 @@ export const searchProducts = createAsyncThunk(
   }
 );
 
+export const searchProductsInLocation = createAsyncThunk(
+  "products/searchInLocation",
+  async (queryParams, thunkAPI) => {
+    try {
+      const response = await productAPI.searchProductsInLocation(queryParams);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getCountriesWithProductsList = createAsyncThunk(
-  "products/getCountryList",
+  "products/getCountryProductsList",
   async (_, thunkAPI) => {
     try {
       return await productAPI.getCountriesWithProductsList();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getCitiesWithProductsList = createAsyncThunk(
+  "products/getCityProductsList",
+  async (_, thunkAPI) => {
+    try {
+      return await productAPI.getCitiesWithProductsList();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getRegionsWithProductsList = createAsyncThunk(
+  "products/getRegionProductsList",
+  async (_, thunkAPI) => {
+    try {
+      return await productAPI.getRegionsWithProductsList();
     } catch (error) {
       const message =
         (error.response &&
@@ -368,6 +428,57 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getCountriesWithProductsList.pending, (state, action) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(getCountriesWithProductsList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.locations.countries = action.payload;
+      })
+      .addCase(getCountriesWithProductsList.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getCitiesWithProductsList.pending, (state, action) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(getCitiesWithProductsList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.locations.cities = action.payload;
+      })
+      .addCase(getCitiesWithProductsList.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getRegionsWithProductsList.pending, (state, action) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(getRegionsWithProductsList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.locations.regions = action.payload;
+      })
+      .addCase(getRegionsWithProductsList.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
         state.message = action.payload;
       });
   },

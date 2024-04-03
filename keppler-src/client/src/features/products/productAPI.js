@@ -1,7 +1,7 @@
 import api from "../api";
 
-const getProducts = async () => {
-  const response = await api.get("/products/all/");
+const getProducts = async (queryParams = "") => {
+  const response = await api.get(`/products/all/${queryParams}`);
   return response.data;
 };
 
@@ -49,8 +49,24 @@ const searchProducts = async (searchParams) => {
   return response.data;
 };
 
+const searchProductsInLocation = async (queryParams) => {
+  const queryString = new URLSearchParams(queryParams).toString();
+  const response = await api.get(`/products/all/?${queryString}`);
+  return response.data;
+};
+
 const getCountriesWithProductsList = async () => {
   const response = await api.get("/products/countries-with-products/");
+  return response.data;
+};
+
+const getCitiesWithProductsList = async () => {
+  const response = await api.get("/products/cities-with-products/");
+  return response.data;
+};
+
+const getRegionsWithProductsList = async () => {
+  const response = await api.get("/products/regions-with-products/");
   return response.data;
 };
 
@@ -79,7 +95,10 @@ const productAPI = {
   createProduct,
   deleteProduct,
   searchProducts,
+  searchProductsInLocation,
   getCountriesWithProductsList,
+  getCitiesWithProductsList,
+  getRegionsWithProductsList,
   getProductCountryList,
   getProductRegionList,
   getProductCityList,

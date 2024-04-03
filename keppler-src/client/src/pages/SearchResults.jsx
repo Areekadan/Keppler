@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Product from "../components/Product";
 import Spinner from "../components/Spinner";
 import Title from "../components/Title";
-import { FaSearch } from "react-icons/fa"; // Adding an icon for visual appeal
+import { FaSearch } from "react-icons/fa";
 
 const SearchResults = () => {
   const { products, isLoading, isError, message } = useSelector(
