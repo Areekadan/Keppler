@@ -6,12 +6,15 @@ import { toast } from "react-toastify";
 import Product from "../components/Product";
 import { getProducts } from "../features/products/productSlice";
 import Title from "../components/Title";
+import FilterComponent from "../components/ProductsFilter";
+import { FaSearch } from "react-icons/fa";
 
 const ProductsPage = () => {
   const { products, isLoading, isError, message } = useSelector(
     (state) => state.products
   );
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (isError) {
       toast.error(message);
@@ -31,23 +34,40 @@ const ProductsPage = () => {
         keywords="global shopping, international product catalog, worldwide marketplace, online shopping, electronics, fashion, home goods, international brands, local crafts, Keppler products"
       />
       <Container className="mg-top">
-        <Row className="justify-content-center">
-          <Col lg={6} md={8} sm={12} className="text-center">
-            <h1 className="text-center mb-4">Globally Sourced Products</h1>
-            <hr className="my-2" />
+        <Row>
+          <Col className="ms-0 mg-top" md={3}>
+            <h5>Filter by</h5>
+            <FilterComponent />
+          </Col>
+          <Col md={9}>
+            <Row className="justify-content-center">
+              <Col lg={12} className="text-center">
+                <h1 className="text-center mb-4">Globally Sourced Products</h1>
+                <hr className="my-2" />
+              </Col>
+            </Row>
+            {products.length === 0 ? (
+              <Row className="justify-content-center">
+                <Col lg={6} md={8} sm={12} className="text-center">
+                  <h3 className="notfound">No Products Match Your Search</h3>
+                  <FaSearch size={50} className="text-primary my-3" />
+                  <p>
+                    Try adjusting your search or filter to find what you're
+                    looking for.
+                  </p>
+                </Col>
+              </Row>
+            ) : (
+              <Row className="mt-3">
+                {products.map((product) => (
+                  <Col key={product.id} sm={12} md={6} lg={4}>
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Col>
         </Row>
-        {
-          <>
-            <Row className="mt-3">
-              {products.map((product) => (
-                <Col key={product.id} sm={12} md={4} lg={3} xl={3}>
-                  <Product product={product}></Product>
-                </Col>
-              ))}
-            </Row>
-          </>
-        }
       </Container>
     </>
   );

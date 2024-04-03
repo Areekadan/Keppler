@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchProducts } from "../features/products/productSlice";
 import { useNavigate } from "react-router-dom";
 
-const SearchComponent = () => {
+const SearchBarComponent = ({ search_param }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    const payload = { catch_phrase: searchQuery };
+    const payload = { [search_param]: searchQuery };
     try {
       await dispatch(searchProducts(payload));
       navigate("/products/search");
@@ -41,4 +41,4 @@ const SearchComponent = () => {
   );
 };
 
-export default SearchComponent;
+export default SearchBarComponent;

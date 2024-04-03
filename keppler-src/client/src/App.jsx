@@ -19,11 +19,25 @@ import ProfilePage from "./pages/ProfilePage";
 import SearchResults from "./pages/SearchResults";
 import Spinner from "./components/Spinner";
 import { getProfile } from "./features/profiles/profileSlice";
+import {
+  getCountriesWithProductsList,
+  getRegionsWithProductsList,
+  getCitiesWithProductsList,
+} from "./features/products/productSlice";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
   const { profile, isLoading } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchLocations = async () => {
+      await dispatch(getCountriesWithProductsList()).unwrap();
+      await dispatch(getRegionsWithProductsList()).unwrap();
+      await dispatch(getCitiesWithProductsList()).unwrap();
+    };
+
+    fetchLocations();
+  }, [dispatch]);
   useEffect(() => {
     if (user) {
       dispatch(getProfile());

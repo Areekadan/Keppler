@@ -130,7 +130,6 @@ const AddProductPage = () => {
     const formData = new FormData();
 
     Object.keys(productData).forEach((key) => {
-      console.log(key, productData[key]);
       formData.append(key, productData[key]);
     });
     if (coverPhoto) formData.append("cover_photo", coverPhoto);

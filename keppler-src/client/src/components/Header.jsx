@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { logout, reset } from "../features/auth/authSlice";
-import SearchComponent from "./SearchProducts";
-import { getCountriesWithProductsList } from "../features/products/productSlice";
+import SearchBarComponent from "./SearchBarHelper";
+import LocationsDropdown from "./LocationSearchHelper";
 
 const Header = () => {
   const topNavbarRef = useRef(null);
@@ -33,15 +33,10 @@ const Header = () => {
     dispatch(reset());
     navigate("/");
   };
-  const [countries, setCountries] = useState([]);
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const data = await dispatch(getCountriesWithProductsList()).unwrap();
-      setCountries(data);
-    };
-
-    fetchCountries();
-  }, [dispatch]);
+  const { locations, isLoading, isError, message } = useSelector(
+    (state) => state.products
+  );
+  const countries = locations.countries;
   useEffect(() => {
     const updateTopNavbarHeight = () => {
       if (topNavbarRef.current) {
@@ -52,6 +47,7 @@ const Header = () => {
     window.addEventListener("resize", updateTopNavbarHeight);
     return () => window.removeEventListener("resize", updateTopNavbarHeight);
   }, []);
+
   return (
     <>
       <header>
@@ -87,13 +83,7 @@ const Header = () => {
                 <LinkContainer className="nav-adjusted" to="/">
                   <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
-                <NavDropdown title="Countries" id="basic-nav-dropdown">
-                  {countries.map((country) => (
-                    <NavDropdown.Item key={country.id}>
-                      {country.name}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
+                <LocationsDropdown parentMap={countries} childMap={"country"} />
                 <NavDropdown title="Products" id="basic-nav-dropdown">
                   <LinkContainer to="/products">
                     <NavDropdown.Item>All Products</NavDropdown.Item>
@@ -171,7 +161,7 @@ const Header = () => {
             Keppler
           </NavbarBrand>
           <Container>
-            <SearchComponent />
+            <SearchBarComponent search_param="catch_phrase" />
           </Container>
         </Navbar>
       </header>

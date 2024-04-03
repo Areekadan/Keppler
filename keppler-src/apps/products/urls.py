@@ -30,6 +30,16 @@ urlpatterns = [
         views.CountriesWithProductsListView.as_view(),
         name="countries-with-products",
     ),
+    path(
+        "cities-with-products/",
+        views.CitiesWithProductsListView.as_view(),
+        name="cities-with-products",
+    ),
+    path(
+        "regions-with-products/",
+        views.RegionsWithProductsListView.as_view(),
+        name="regions-with-products",
+    ),
     path("countries/", views.CountryListView.as_view(), name="country-list"),
     path(
         "regions/<int:country_id>/",
