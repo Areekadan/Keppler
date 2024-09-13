@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { GoChevronRight, GoChevronLeft } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { truncateText } from "../utils";
+import { searchProducts } from "../features/products/productSlice";
 
 const countries = [
   {
@@ -32,6 +34,8 @@ const countries = [
 ];
 
 const CountryCards = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const scrollContainerRef = useRef(null);
 
   const scroll = (direction) => {
@@ -41,6 +45,18 @@ const CountryCards = () => {
         direction === "left" ? -current.offsetWidth : current.offsetWidth;
       current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
+  };
+
+  const { locations, products, isLoading, isError, message } = useSelector(
+    (state) => state.products
+  );
+
+  const handleCountrySelect = async (countryName) => {
+    const countryID = locations.countries.find(
+      (location) => location.name === countryName
+    )?.id;
+    await dispatch(searchProducts({ country: countryID }));
+    navigate("/products/search");
   };
 
   return (
@@ -65,7 +81,12 @@ const CountryCards = () => {
                 </Card.Title>
                 <Card.Img variant="top" src={country.flagUrl} />
                 <Card.Body className="d-flex align-items-center justify-content-center home-card-body">
-                  <Link style={{ color: "#2190FF" }}>Shop Now</Link>
+                  <Link
+                    onClick={() => handleCountrySelect(country.name)}
+                    style={{ color: "#2190FF" }}
+                  >
+                    Shop Now
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>

@@ -16,9 +16,9 @@ const ProductsPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
+    // if (isError) {
+    //   toast.error(message);
+    // }
     dispatch(getProducts());
   }, [dispatch, isError, message]);
 

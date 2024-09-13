@@ -16,6 +16,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ActivationPage from "./pages/ActivationPage";
 import ProfilePage from "./pages/ProfilePage";
+import DealsPage from "./pages/DealsPage";
 import SearchResults from "./pages/SearchResults";
 import Spinner from "./components/Spinner";
 import { getProfile } from "./features/profiles/profileSlice";
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/activate/:uid/:token" element={<ActivationPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/products/deals/:country" element={<DealsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer theme="light" />

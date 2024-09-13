@@ -13,10 +13,19 @@ const SellerProductsPage = () => {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    dispatch(getSellerProducts());
+    const fetchData = async () => {
+      window.scrollTo(0, 0);
+      if (isError) {
+        toast.error(message);
+      }
+      try {
+        await dispatch(getSellerProducts());
+      } catch (error) {
+        console.error("Failed to fetch seller products:", error);
+      }
+    };
+
+    fetchData();
   }, [dispatch, isError, message]);
 
   if (isLoading) {

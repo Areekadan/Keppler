@@ -5,7 +5,7 @@ from cities_light.models import Country, City, Region
 
 from apps.reviews.serializers import ReviewSerializer
 
-from .models import Product, ProductViews
+from .models import Product, ProductViews, Category, SubCategory
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -26,8 +26,28 @@ class CitySerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name"]
+
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    parent_category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all()
+    )
+    parent_category_name = serializers.CharField(
+        source="parent_category.name", read_only=True
+    )
+
+    class Meta:
+        model = SubCategory
+        fields = ["id", "name", "parent_category", "parent_category_name"]
+
+
 class ProductSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    category = SubCategorySerializer(read_only=True)
     country = CountrySerializer(read_only=True)
     region = RegionSerializer(read_only=True)
     city = CitySerializer(read_only=True)
@@ -44,6 +64,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "user",
+            "category",
             "title",
             "slug",
             "ref_code",

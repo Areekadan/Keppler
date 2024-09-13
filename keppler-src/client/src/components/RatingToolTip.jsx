@@ -42,7 +42,9 @@ const RatingToolTip = forwardRef(({ product, ...props }, ref) => {
                   className="review-bar"
                   style={{ width: `${widthPercentage}%` }}
                 >
-                  <span className="review-percentage">{`${widthPercentage}%`}</span>
+                  <span className="review-percentage">{`${parseFloat(
+                    widthPercentage.toFixed(0)
+                  )}%`}</span>
                 </div>
               )}
             </div>

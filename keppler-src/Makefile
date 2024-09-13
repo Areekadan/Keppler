@@ -23,6 +23,12 @@ migrate:
 makemigrations:
 	docker compose exec api python3 manage.py makemigrations
 
+categories:
+	docker compose exec api python3 manage.py init_categories
+
+locations: 
+	docker compose exec api python3 manage.py cities_light
+	
 flush: 
 	docker compose exec api python3 manage.py flush
 

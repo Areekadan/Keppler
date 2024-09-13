@@ -27,18 +27,18 @@ const deals = [
     sale: "40%",
   },
   {
+    name: "Chef Knives",
+    imgUrl:
+      "https://montecristomagazine.com/wp-content/uploads/2017/11/tojos_montecristo_hi-res-4_01.jpg",
+    country: "Japan",
+    sale: "35%",
+  },
+  {
     name: "Winter Wear",
     imgUrl:
       "https://www.8848altitude.com/eu/pub_docs/files/MountainstyleWorkinprogress/Mountain_Style_Ski_Hero_1600x900.jpg?extend=copy&width=2048&method=fit&height=1152&type=webp",
     country: "Canada",
     sale: "20%",
-  },
-  {
-    name: "Japanese Sword",
-    imgUrl:
-      "https://www.thoughtco.com/thmb/VAnBWluUA7K1TJJ8-O7hk3a1Cio=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-814108654-78d4413a438a4dbaa4e3dba73267a045.jpg",
-    country: "Japan",
-    sale: "35%",
   },
   {
     name: "Natural Diamond",
@@ -88,7 +88,12 @@ const DealCards = () => {
                   </div>
                 )}
                 <Card.Body className="home-card-body">
-                  <Link style={{ color: "#2190FF" }}>Shop {deal.country}</Link>
+                  <Link
+                    to={`/products/deals/${deal.country}`}
+                    style={{ color: "#2190FF" }}
+                  >
+                    Shop {deal.country}
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>

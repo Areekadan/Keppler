@@ -18,10 +18,13 @@ class Gender(models.TextChoices):
 class Profile(TimeStampedUUIDModel):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     phone_number = PhoneNumberField(
-        verbose_name=_("phone Number"), max_length=30, default="00000000"
+        verbose_name=_("phone Number"), max_length=30, default="+17809659789"
     )
     about_me = models.TextField(
         verbose_name=_("About me"),
+        default="Hello! I'm new here and currently working on filling out my profile. "
+        "I have a wide range of products and skills that I'm excited to share with this community. "
+        "Please check back later to learn more about me or feel free to reach out and connect!",
     )
     license = models.CharField(
         verbose_name=_("Business license"), max_length=20, blank=True, null=True

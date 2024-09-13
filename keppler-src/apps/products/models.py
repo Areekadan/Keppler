@@ -23,7 +23,47 @@ class ProductPublishedManager(models.Manager):
         )
 
 
+class Category(models.Model):
+    name = models.CharField(
+        max_length=255, unique=True, verbose_name=_("Category Name")
+    )
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_("Subcategory Name"))
+    parent_category = models.ForeignKey(
+        Category,
+        related_name="subcategories",
+        on_delete=models.CASCADE,
+        verbose_name=_("Parent Category"),
+    )
+
+    class Meta:
+        verbose_name = _("Subcategory")
+        verbose_name_plural = _("Subcategories")
+        unique_together = ("name", "parent_category")
+
+    def __str__(self):
+        return f"{self.parent_category} > {self.name}"
+
+
 class Product(TimeStampedUUIDModel):
+    category = models.ForeignKey(
+        SubCategory,
+        related_name="products",
+        verbose_name=_("Subcategory"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
     class ProductStatus(models.TextChoices):
         ACTIVE = "Active", _("Active")
         DISCONTINUED = "Discontinued", _("Discontinued")
@@ -233,7 +273,7 @@ class Product(TimeStampedUUIDModel):
         review_count = reviews.count()
         self.review_count = review_count
         if review_count > 0:
-            self.average_rating = total_rating / review_count
+            self.average_rating = round(total_rating / review_count, 2)
         else:
             self.average_rating = 0
         self.save()

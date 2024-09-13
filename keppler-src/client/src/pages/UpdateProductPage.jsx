@@ -18,6 +18,10 @@ const UpdateProductPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (slug) dispatch(getOneProduct({ slug }));
+  }, [dispatch, slug]);
+
   const { profile } = useSelector((state) => state.profile);
   const { product, isLoading, isError, message } = useSelector(
     (state) => state.products
@@ -27,6 +31,7 @@ const UpdateProductPage = () => {
     title: "",
     description: "",
     country: "",
+    region: "",
     city: "",
     price: "",
     quantity: "",
@@ -56,8 +61,9 @@ const UpdateProductPage = () => {
       setProductData({
         title: product.title,
         description: product.description,
-        country: product.country.name,
-        city: product.city.name,
+        country: product.country?.name,
+        region: product.region?.name,
+        city: product.city?.name,
         price: product.price,
         quantity: product.quantity,
         tax: product.tax,
@@ -112,10 +118,6 @@ const UpdateProductPage = () => {
     ],
     productStatus: ["Active", "Discontinued", "Out of Stock"],
   };
-
-  useEffect(() => {
-    if (slug) dispatch(getOneProduct({ slug }));
-  }, [dispatch, slug]);
 
   const handleInputChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -234,6 +236,16 @@ const UpdateProductPage = () => {
                     name="country"
                     required
                     value={productData.country}
+                    onChange={handleInputChange}
+                  />
+                </Col>
+                <Col sm={6}>
+                  <Form.Label>Region</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="region"
+                    required
+                    value={productData.region}
                     onChange={handleInputChange}
                   />
                 </Col>
